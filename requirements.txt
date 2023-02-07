@@ -1,0 +1,8 @@
+Webpack
+     Babel (Транспилятор, преобразует современный синтаксис под машинный, примитивный язык)
+     Scss
+     Eslint
+     2 modes
+        - DEV (dev server SourceMap Eslint NotMinifiedJS & CSS)
+        - PROD (minified code)
+Git
