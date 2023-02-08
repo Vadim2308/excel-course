@@ -3,18 +3,17 @@ const HTMLWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const isProd = process.env.NODE_ENV === 'production'
-const isDev = process.env.NODE_ENV === 'development'
+const isProduction = process.env.NODE_ENV === 'production'
+const isDevelopment = process.env.NODE_ENV === 'development'
 
-console.log('isDev',isDev)
-console.log('isProd',isProd)
+const getFileName = extension => isDevelopment ? `bundle.${extension}` : `bundle.[hash].${extension}` // Хеши нужно подставлять, чтоб браузер понимал какие файлы изменились, и делал перезагрузку.
 
 module.exports = {
-    context: path.resolve(__dirname, 'src'), // Нота делает абсолютный путь к папке проекта и конкатинирует с src
+    context: path.resolve(__dirname, 'src'), // Нода делает абсолютный путь к папке проекта и конкатинирует с src
     mode: 'development',
     entry: './index.ts',
     output: {
-        filename: 'bundle.[hash].js', // Хеши нужно подставлять, чтоб браузер понимал какие файлы изменились, и делал перезагрузку.
+        filename: getFileName('js'),
         path: path.resolve(__dirname, 'dist')
     },
     resolve: {
@@ -24,9 +23,27 @@ module.exports = {
             '@core': path.resolve(__dirname, 'src/core')
         }
     },
+    devtool: isDevelopment ? "source-map" : false,
+    devServer: {
+        port:3000,
+        https: true,
+        hot:isDevelopment,
+        devMiddleware: {
+            // index: true,
+            // methods:[ 'GET', 'HEAD' ],
+            // mimeTypes: { phtml: 'text/html' },
+            // publicPath: '/dist',
+            // serverSideRender: true,
+            writeToDisk: true,
+        },
+    },
     plugins: [
         new HTMLWebpackPlugin({
-            template: 'index.html'
+            template: 'index.html',
+            minify: {
+                removeComments:isProduction,
+                collapseWhitespace:isProduction
+            }
         }),
         new CopyPlugin({
             patterns: [
@@ -37,7 +54,7 @@ module.exports = {
             ],
         }),
         new MiniCssExtractPlugin({
-            filename: 'bundle.[hash].css'
+            filename: getFileName('css')
         })
     ],
     module: {
