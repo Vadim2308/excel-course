@@ -3,6 +3,12 @@ const HTMLWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
+const isProd = process.env.NODE_ENV === 'production'
+const isDev = process.env.NODE_ENV === 'development'
+
+console.log('isDev',isDev)
+console.log('isProd',isProd)
+
 module.exports = {
     context: path.resolve(__dirname, 'src'), // Нота делает абсолютный путь к папке проекта и конкатинирует с src
     mode: 'development',
@@ -22,12 +28,14 @@ module.exports = {
         new HTMLWebpackPlugin({
             template: 'index.html'
         }),
-        new CopyPlugin([
-            {
-                from: path.resolve(__dirname, 'src/favicon.ico'),
-                to: path.resolve(__dirname, 'dist')
-            }
-        ]),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'src/favicon.ico'),
+                    to: path.resolve(__dirname, 'dist')
+                }
+            ],
+        }),
         new MiniCssExtractPlugin({
             filename: 'bundle.[hash].css'
         })
