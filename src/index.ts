@@ -1,4 +1,2 @@
-import './module'
-import './scss/index.scss'
-
-console.log('!21323')
+import './module';
+import './scss/index.scss';
