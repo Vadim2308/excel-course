@@ -1,7 +1,11 @@
 {
-  "parser": "@babel/eslint-parser",
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "root": true,
   "parserOptions": {
-    "ecmaVersion": 8,
+    "ecmaVersion": "latest",
     "requireConfigFile": false
   },
   "env": {
@@ -9,10 +13,14 @@
     "browser": true,
     "node": true
   },
-  "extends": ["eslint:recommended", "google"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "rules": {
     "arrow-parens": "off",
     "max-lines": "off",
-    "max-len": "off"
+    "max-len": "off",
+    "require-jsdoc": "off",
+    "object-curly-spacing": ["error", "always"],
+    "no-multi-spaces": "error",
+    "@typescript-eslint/no-var-requires": 0
   }
 }
