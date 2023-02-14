@@ -1,3 +1,5 @@
+const tsconfig = require('./tsconfig.json')
+
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -6,7 +8,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
+const tsAliases = tsconfig.compilerOptions.paths
 const getFileName = extension => isDevelopment ? `bundle.${extension}` : `bundle.[hash].${extension}`; // Хеши нужно подставлять, чтоб браузер понимал какие файлы изменились, и делал перезагрузку.
+
+const getAliases = () => Object.keys(tsAliases).reduce((acc, item) => {
+  const key = item.replace("/*", "");
+  const value = tsAliases[item].join().replace("/*", "")
+  acc[key] = path.resolve(__dirname,value);
+  return acc;
+}, {});
 
 const getJSLoaders = () => {
   const loaders = [{
@@ -37,10 +47,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-      '@core': path.resolve(__dirname, 'src/core'),
-    },
+    alias: getAliases()
   },
   devtool: isDevelopment ? 'source-map' : false,
   devServer: {

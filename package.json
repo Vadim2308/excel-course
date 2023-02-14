@@ -27,8 +27,9 @@
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.20.12",
-    "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.20.2",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
     "babel-loader": "^9.1.2",
     "copy-webpack-plugin": "^11.0.0",
     "cross-env": "^7.0.3",
